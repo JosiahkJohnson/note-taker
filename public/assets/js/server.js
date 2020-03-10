@@ -23,7 +23,25 @@ app.get("/", function(req, res){
 app.get("/notes", function(req, res){
     res.sendFile(`${process.cwd()}/public/notes.html`);
 });
+app.get("/api/notes", function(req, res){
+    console.log("Notes returned");
+    return res.json(notes);
+});
+//save new note with the post command
+app.post("/api/notes", function(req, res){
+    const newNote = req.body;
+    newNote.id = notes.length + 1;
 
+    //add the note to the server's data
+    notes.push(newNote);
+
+    res.json(newNote);
+    console.log(req.body);
+    console.log("new note saved");
+});
+
+//starting the server and having it listen on the correct port
+//console logging the confirmation
 app.listen(PORT, function(){
     console.log("App listening on PORT " + PORT);
 });
