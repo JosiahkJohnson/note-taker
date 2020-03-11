@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(express.static("public"));
 
+//our server's storage for notes
 let notes = [];
 
 //initialize routing
@@ -23,6 +24,7 @@ app.get("/", function(req, res){
 app.get("/notes", function(req, res){
     res.sendFile(`${process.cwd()}/public/notes.html`);
 });
+//give back requested notes in json object notation
 app.get("/api/notes", function(req, res){
     console.log("Notes returned");
     return res.json(notes);
@@ -43,8 +45,15 @@ app.post("/api/notes", function(req, res){
 
 //delete notes from the server when the trash icon is hit
 app.delete("/api/notes/:id", function(req, res){
-    notes.splice(req.params.id - 1);
 
+    notes.splice((req.params.id - 1), 1);
+
+    //refresh the ids of the notes
+    for(let i = 0; i < notes.length; i++){
+        notes[i].id = i +1;
+    }
+
+    console.log("removed id " + req.params.id);
     return res.json(notes);
 });
 
