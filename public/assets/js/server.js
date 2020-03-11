@@ -27,6 +27,7 @@ app.get("/api/notes", function(req, res){
     console.log("Notes returned");
     return res.json(notes);
 });
+
 //save new note with the post command
 app.post("/api/notes", function(req, res){
     const newNote = req.body;
@@ -38,6 +39,13 @@ app.post("/api/notes", function(req, res){
     res.json(newNote);
     console.log(req.body);
     console.log("new note saved");
+});
+
+//delete notes from the server when the trash icon is hit
+app.delete("/api/notes/:id", function(req, res){
+    notes.splice(req.params.id - 1);
+
+    return res.json(notes);
 });
 
 //starting the server and having it listen on the correct port
